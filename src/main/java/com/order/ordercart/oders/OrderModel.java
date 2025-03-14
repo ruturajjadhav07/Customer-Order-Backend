@@ -35,7 +35,7 @@ public class OrderModel {
     private String orderAddress;
 
     @Column(name = "order_amount", nullable = false)
-    private String orderAmount;
+    private double orderAmount;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)

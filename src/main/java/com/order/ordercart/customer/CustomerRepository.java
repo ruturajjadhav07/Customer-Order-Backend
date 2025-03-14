@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<CustomerModel, Long> {
+
     // check existing email
     boolean existsByEmail(String email);
 
+    // login by email
     Optional<CustomerModel> findByEmail(String email);
 }
