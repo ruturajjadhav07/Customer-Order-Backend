@@ -28,6 +28,9 @@ public class ProductModel {
     @Column(name = "product_description", nullable = false)
     private String productDescription;
 
+    @Column(name = "product_category", nullable = false)
+    private String productCategory;
+
     @Column(name = "product_quantity", nullable = false)
     private int productQuantity;
 }
