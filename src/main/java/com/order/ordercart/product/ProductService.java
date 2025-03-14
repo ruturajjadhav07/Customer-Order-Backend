@@ -71,8 +71,8 @@ public class ProductService {
     }
 
     // get product with search name
-    public List<ProductModel> getProductBySearch(String productName) {
-        return productRepository.findByProductNameContainingIgnoreCase(productName);
+    public List<ProductModel> getProductBySearch(String name) {
+        return productRepository.findByProductNameContainingIgnoreCase(name);
     }
 
 }
