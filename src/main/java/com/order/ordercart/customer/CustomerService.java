@@ -3,6 +3,10 @@ package com.order.ordercart.customer;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -12,6 +16,12 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // Register customer details
     public CustomerModel register(String name, String password, String email, String address, String phone_no) {
@@ -42,7 +52,7 @@ public class CustomerService {
 
         CustomerModel customer = new CustomerModel();
         customer.setName(name);
-        customer.setPassword(password);
+        customer.setPassword(bCryptPasswordEncoder.encode(password));
         customer.setEmail(email);
         customer.setAddress(address);
         customer.setPhoneNumber(phone_no);
@@ -52,7 +62,7 @@ public class CustomerService {
     }
 
     // login customer details
-    public CustomerModel login(String email, String password) {
+    public String login(String email, String password) {
         if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("Please enter email");
         }
@@ -64,11 +74,17 @@ public class CustomerService {
         CustomerModel customer = customerRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with this email"));
 
-        if (!customer.getPassword().equals(password)) {
+        if (!bCryptPasswordEncoder.matches(password, customer.getPassword())) {
             throw new IllegalArgumentException("Invalid password");
         }
 
-        return customer;
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(email, password));
+
+        if (authentication.isAuthenticated()) {
+            return "Success";
+        }
+        return "Failed";
     }
 
     // update customer details
