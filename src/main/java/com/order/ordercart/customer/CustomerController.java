@@ -12,12 +12,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.order.ordercart.jwtservice.JWTService;
+
 @RestController
 // @RequestMapping("/customers")
 public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private JWTService jwtService;
 
     // register customer details
     @PostMapping("/register")
@@ -29,9 +34,20 @@ public class CustomerController {
 
     // login customer details
     @PostMapping("/login")
+    // public ResponseEntity<String> login(@RequestBody CustomerModel customer) {
+    // customerService.login(customer.getEmail(), customer.getPassword());
+    // return ResponseEntity.ok("Login Successful");
+    // }
+
     public ResponseEntity<String> login(@RequestBody CustomerModel customer) {
-        customerService.login(customer.getEmail(), customer.getPassword());
-        return ResponseEntity.ok("Login Successful");
+        String Authenticated = customerService.login(customer.getEmail(), customer.getPassword());
+
+        if (Authenticated != null) {
+            String token = jwtService.generateToken(customer.getEmail());
+            return ResponseEntity.ok(token);
+        }
+
+        return ResponseEntity.status(401).body("Invalid credentials");
     }
 
     // update customer details

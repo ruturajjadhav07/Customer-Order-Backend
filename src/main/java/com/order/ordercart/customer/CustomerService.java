@@ -9,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.order.ordercart.jwtservice.JWTService;
+
 import jakarta.transaction.Transactional;
 
 @Service
@@ -22,6 +24,9 @@ public class CustomerService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private JWTService jwtService;
 
     // Register customer details
     public CustomerModel register(String name, String password, String email, String address, String phone_no) {
@@ -82,7 +87,8 @@ public class CustomerService {
                 .authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
         if (authentication.isAuthenticated()) {
-            return "Success";
+            // return "Success";
+            return jwtService.generateToken(email);
         }
         return "Failed";
     }
