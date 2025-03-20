@@ -1,10 +1,12 @@
 package com.order.ordercart.config;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -46,9 +48,14 @@ public class JWTFilter extends OncePerRequestFilter {
             UserDetails userDetails = applicationContext.getBean(CustomerDetailService.class)
                     .loadUserByUsername(email);
 
+            List<SimpleGrantedAuthority> authorities = jwtService.extractRoles(token)
+                    .stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .toList(); // Extract roles from JWT
+
             if (jwtService.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+                        userDetails, null, authorities);
 
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);

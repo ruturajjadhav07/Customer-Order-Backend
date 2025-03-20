@@ -28,22 +28,16 @@ public class CustomerController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody CustomerModel customer) {
         customerService.register(customer.getName(), customer.getPassword(), customer.getEmail(), customer.getAddress(),
-                customer.getPhoneNumber());
+                customer.getPhoneNumber(), customer.getRole());
         return ResponseEntity.ok("Registered Successfully");
     }
 
     // login customer details
     @PostMapping("/login")
-    // public ResponseEntity<String> login(@RequestBody CustomerModel customer) {
-    // customerService.login(customer.getEmail(), customer.getPassword());
-    // return ResponseEntity.ok("Login Successful");
-    // }
-
     public ResponseEntity<String> login(@RequestBody CustomerModel customer) {
-        String Authenticated = customerService.login(customer.getEmail(), customer.getPassword());
+        String token = customerService.login(customer.getEmail(), customer.getPassword());
 
-        if (Authenticated != null) {
-            String token = jwtService.generateToken(customer.getEmail());
+        if (!token.equals("Failed")) {
             return ResponseEntity.ok(token);
         }
 
@@ -65,7 +59,7 @@ public class CustomerController {
     }
 
     // get all customers
-    @GetMapping()
+    @GetMapping("/admin/customers")
     public List<CustomerModel> getAllCustomers() {
         return customerService.getAllCustomers();
     }

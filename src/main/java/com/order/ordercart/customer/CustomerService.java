@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.order.ordercart.customer.CustomerModel.Role;
 import com.order.ordercart.jwtservice.JWTService;
 
 import jakarta.transaction.Transactional;
@@ -29,7 +30,8 @@ public class CustomerService {
     private JWTService jwtService;
 
     // Register customer details
-    public CustomerModel register(String name, String password, String email, String address, String phone_no) {
+    public CustomerModel register(String name, String password, String email, String address, String phone_no,
+            Role role) {
 
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Please enter name");
@@ -61,6 +63,8 @@ public class CustomerService {
         customer.setEmail(email);
         customer.setAddress(address);
         customer.setPhoneNumber(phone_no);
+        // customer.setRole(Role.USER); // default
+        customer.setRole(role != null ? role : Role.USER);
 
         return customerRepository.save(customer);
 
@@ -88,7 +92,9 @@ public class CustomerService {
 
         if (authentication.isAuthenticated()) {
             // return "Success";
-            return jwtService.generateToken(email);
+            List<String> roles = List.of(customer.getRole().name()); // Get roles from CustomerModel
+            return jwtService.generateToken(email, roles);
+            // return jwtService.generateToken(email);
         }
         return "Failed";
     }
@@ -127,7 +133,7 @@ public class CustomerService {
         }
 
         updateCustomer.setName(customer.getName());
-        updateCustomer.setPassword(customer.getPassword());
+        updateCustomer.setPassword(bCryptPasswordEncoder.encode(customer.getPassword()));
         updateCustomer.setEmail(customer.getEmail());
         updateCustomer.setAddress(customer.getAddress());
         updateCustomer.setPhoneNumber(customer.getPhoneNumber());
