@@ -50,8 +50,8 @@ public class JWTFilter extends OncePerRequestFilter {
 
             List<SimpleGrantedAuthority> authorities = jwtService.extractRoles(token)
                     .stream()
-                    .map(SimpleGrantedAuthority::new)
-                    .toList(); // Extract roles from JWT
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // Add ROLE_ prefix
+                    .toList();
 
             if (jwtService.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
@@ -59,6 +59,11 @@ public class JWTFilter extends OncePerRequestFilter {
 
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+                // debuggin
+                System.out.println("JWT Token: " + token);
+                System.out.println("Extracted Email: " + email);
+                System.out.println("Extracted Role: " + userDetails.getAuthorities());
             }
         }
         filterChain.doFilter(request, response);

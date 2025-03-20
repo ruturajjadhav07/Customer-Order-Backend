@@ -92,9 +92,8 @@ public class CustomerService {
 
         if (authentication.isAuthenticated()) {
             // return "Success";
-            List<String> roles = List.of(customer.getRole().name()); // Get roles from CustomerModel
+            List<String> roles = List.of("ROLE_" + customer.getRole().name());
             return jwtService.generateToken(email, roles);
-            // return jwtService.generateToken(email);
         }
         return "Failed";
     }

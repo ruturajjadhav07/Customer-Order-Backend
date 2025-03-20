@@ -21,6 +21,7 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    @SuppressWarnings("unused")
     @Autowired
     private JWTService jwtService;
 

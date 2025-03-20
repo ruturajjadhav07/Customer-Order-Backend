@@ -16,8 +16,14 @@ public class CustomerPrinciple implements UserDetails {
     }
 
     @Override
+    // public Collection<? extends GrantedAuthority> getAuthorities() {
+    // return Collections.singleton(new
+    // SimpleGrantedAuthority("ROLE_"+customerModel.getRole().name()));
+    // }
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("USER"));
+        String role = "ROLE_" + customerModel.getRole().name();
+        System.out.println("User Role: " + role); // 🛠 Debugging statement
+        return Collections.singleton(new SimpleGrantedAuthority(role));
     }
 
     @Override

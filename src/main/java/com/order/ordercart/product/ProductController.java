@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,17 +13,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/customers")
+// @RequestMapping("/customers")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    // add product
-    @PostMapping("/addproduct")
+    // add product by admin
+    @PreAuthorize("hasRole('ADMIN')") // only admins can access this
+    @PostMapping("/admin/addproduct")
     public ResponseEntity<String> addProduct(@RequestBody ProductModel product) {
-        productService.addProduct(product.getProductName(), product.getProductPrice(), product.getProductDescription(),
-                product.getProductCategory(), product.getProductQuantity());
+        productService.addProduct(
+                product.getProductName(),
+                product.getProductPrice(),
+                product.getProductDescription(),
+                product.getProductCategory(),
+                product.getProductQuantity());
         return ResponseEntity.ok("Product added successfully");
     }
 
@@ -45,6 +51,7 @@ public class ProductController {
     }
 
     // get product with search name
+    @GetMapping("/allproducts/search")
     public List<ProductModel> getProductBySearch(@RequestParam String name) {
         return productService.getProductBySearch(name);
     }

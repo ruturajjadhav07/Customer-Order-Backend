@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -62,9 +63,12 @@ public class JWTService {
         return claimResolver.apply(claims);
     }
 
+    @SuppressWarnings("unchecked")
     public List<String> extractRoles(String token) {
         Claims claims = extractAllClaims(token);
-        return claims.get("roles", List.class);
+        List<String> roles = claims.get("roles", List.class);
+        return roles.stream().map(role -> "ROLE_" + role).collect(Collectors.toList());
+        // return claims.get("roles", List.class);
     }
 
     private Claims extractAllClaims(String token) {
