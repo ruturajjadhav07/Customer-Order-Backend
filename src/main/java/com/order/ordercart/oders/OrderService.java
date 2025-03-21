@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.order.ordercart.customer.CustomerModel;
 import com.order.ordercart.customer.CustomerRepository;
-import com.order.ordercart.exceptions.CustomerNotFoundException;
-import com.order.ordercart.exceptions.OrderCreationException;
-import com.order.ordercart.exceptions.ProductNotFoundException;
-import com.order.ordercart.exceptions.StockUnavailableException;
+import com.order.ordercart.exception.CustomerNotFoundException;
+import com.order.ordercart.exception.OrderCreationException;
+import com.order.ordercart.exception.ProductNotFoundException;
+import com.order.ordercart.exception.StockUnavailableException;
 import com.order.ordercart.orderitem.OrderItem;
 import com.order.ordercart.orderitem.OrderItemRepository;
 import com.order.ordercart.orderitem.OrderItemReq;
