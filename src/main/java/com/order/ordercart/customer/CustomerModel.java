@@ -32,6 +32,7 @@ public class CustomerModel {
     private String name;
 
     @Column(name = "password", nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(name = "email", nullable = false, unique = true)

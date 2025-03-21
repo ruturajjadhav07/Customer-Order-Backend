@@ -31,9 +31,6 @@ public class OrderModel {
     @Column(name = "order_date", nullable = false)
     private Date orderDate;
 
-    @Column(name = "order_address", nullable = false)
-    private String orderAddress;
-
     @Column(name = "order_amount", nullable = false)
     private double orderAmount;
 

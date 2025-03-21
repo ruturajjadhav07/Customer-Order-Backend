@@ -1,0 +1,82 @@
+package com.order.ordercart.oders;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.order.ordercart.customer.CustomerModel;
+import com.order.ordercart.customer.CustomerRepository;
+import com.order.ordercart.exceptions.CustomerNotFoundException;
+import com.order.ordercart.exceptions.OrderCreationException;
+import com.order.ordercart.exceptions.ProductNotFoundException;
+import com.order.ordercart.exceptions.StockUnavailableException;
+import com.order.ordercart.orderitem.OrderItem;
+import com.order.ordercart.orderitem.OrderItemRepository;
+import com.order.ordercart.orderitem.OrderItemReq;
+import com.order.ordercart.product.ProductModel;
+import com.order.ordercart.product.ProductRepository;
+
+import jakarta.transaction.Transactional;
+
+@Service
+@Transactional
+public class OrderService {
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
+    public OrderModel createOrder(long customerId, List<OrderItemReq> items) {
+        if (items == null || items.isEmpty()) {
+            throw new OrderCreationException("Order cannot be empty. Please add items.");
+        }
+
+        CustomerModel customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + customerId));
+
+        OrderModel order = new OrderModel();
+        order.setCustomer(customer);
+        order.setOrderName("Order-" + customerId + "-" + System.currentTimeMillis());
+        order.setOrderDate(Date.valueOf(LocalDate.now()));
+        order.setOrderAmount(0.0);
+        order = orderRepository.save(order);
+
+        double totalAmount = 0.0;
+
+        for (OrderItemReq item : items) {
+            ProductModel product = productRepository.findById(item.getProductId())
+                    .orElseThrow(
+                            () -> new ProductNotFoundException("Product not found with id: " + item.getProductId()));
+
+            if (product.getProductQuantity() < item.getQuantity()) {
+                throw new StockUnavailableException("Insufficient stock for product: " + product.getProductName());
+            }
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
+            orderItem.setProduct(product);
+            orderItem.setItemQuantity(item.getQuantity());
+            orderItem.setItemAmount(product.getProductPrice() * item.getQuantity());
+            orderItemRepository.save(orderItem);
+
+            totalAmount += orderItem.getItemAmount();
+
+            // Reduce product stock
+            product.setProductQuantity(product.getProductQuantity() - item.getQuantity());
+            productRepository.save(product);
+        }
+
+        order.setOrderAmount(totalAmount);
+        return orderRepository.save(order);
+    }
+}
