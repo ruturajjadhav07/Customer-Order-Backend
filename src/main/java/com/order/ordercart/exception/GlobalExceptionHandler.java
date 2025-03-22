@@ -38,4 +38,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("An unexpected error occurred: " + exception.getMessage());
     }
+
+    @ExceptionHandler(OrderItemNotFoundException.class)
+    public ResponseEntity<String> handleOrderItemNotFound(Exception exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
 }

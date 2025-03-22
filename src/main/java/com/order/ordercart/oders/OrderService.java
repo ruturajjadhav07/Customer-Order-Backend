@@ -36,6 +36,7 @@ public class OrderService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    // create a order
     public OrderModel createOrder(long customerId, List<OrderItemReq> items) {
         if (items == null || items.isEmpty()) {
             throw new OrderCreationException("Order cannot be empty. Please add items.");
@@ -78,5 +79,10 @@ public class OrderService {
 
         order.setOrderAmount(totalAmount);
         return orderRepository.save(order);
+    }
+
+    // get list of all orders
+    public List<OrderModel> getOrderList() {
+        return orderRepository.findAll();
     }
 }
