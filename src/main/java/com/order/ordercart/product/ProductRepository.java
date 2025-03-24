@@ -1,6 +1,7 @@
 package com.order.ordercart.product;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,4 +13,6 @@ public interface ProductRepository extends JpaRepository<ProductModel, Long> {
     List<ProductModel> findByProductCategory(String productCategory);
 
     List<ProductModel> findByProductNameContainingIgnoreCase(String productName);
+
+    Optional<ProductModel> findByProductName(String string);
 }

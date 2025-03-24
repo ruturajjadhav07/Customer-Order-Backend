@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,6 +56,20 @@ public class ProductController {
     @GetMapping("/allproducts/search")
     public List<ProductModel> getProductBySearch(@RequestParam String name) {
         return productService.getProductBySearch(name);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')") // only admins can access this
+    @PutMapping("/allproducts/update/{id}")
+    public ResponseEntity<String> updateProduct(@PathVariable long id, @RequestBody ProductModel product) {
+        productService.updateProduct(id, product);
+        return ResponseEntity.ok("Product updated");
+    }
+
+    @PreAuthorize("hasRole('ADMIN')") // only admins can access this
+    @DeleteMapping("/allproducts/delete/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.ok("Product deleted with id: " + id);
     }
 
 }
