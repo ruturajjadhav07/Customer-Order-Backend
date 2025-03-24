@@ -29,6 +29,12 @@ public class CustomerService {
     @Autowired
     private JWTService jwtService;
 
+    // Fetch customer details by email
+    public CustomerModel getCustomerByEmail(String email) {
+        return customerRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with this email"));
+    }
+
     // Register customer details
     public CustomerModel register(String name, String password, String email, String address, String phone_no,
             Role role) {
