@@ -11,6 +11,7 @@ import com.order.ordercart.customer.CustomerModel;
 import com.order.ordercart.customer.CustomerRepository;
 import com.order.ordercart.exception.CustomerNotFoundException;
 import com.order.ordercart.exception.OrderCreationException;
+import com.order.ordercart.exception.OrderItemNotFoundException;
 import com.order.ordercart.exception.ProductNotFoundException;
 import com.order.ordercart.exception.StockUnavailableException;
 import com.order.ordercart.orderitem.OrderItem;
@@ -79,6 +80,20 @@ public class OrderService {
 
         order.setOrderAmount(totalAmount);
         return orderRepository.save(order);
+    }
+
+    // get order details by ID
+    public OrderModel orderDetails(long order_id) {
+        OrderModel getDetails = orderRepository.findById(order_id)
+                .orElseThrow(() -> new OrderItemNotFoundException("Order details not found with id:" + order_id));
+        return getDetails;
+    }
+
+    // get all orders of a specific customer
+    public List<OrderModel> AllOrdersBySingleCustomer(long id) {
+        CustomerModel customer = customerRepository.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + id));
+        return orderRepository.findByCustomer(customer);
     }
 
     // get list of all orders
