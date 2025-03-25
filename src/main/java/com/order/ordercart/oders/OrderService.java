@@ -100,4 +100,18 @@ public class OrderService {
     public List<OrderModel> getOrderList() {
         return orderRepository.findAll();
     }
+
+    // delete an order by specific user
+    public void deleteOrder(long id, long order_id) {
+        @SuppressWarnings("unused")
+        CustomerModel customer = customerRepository.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + id));
+
+        OrderModel order = orderRepository.findById(order_id).filter(o -> o.getCustomer().getId() == id)
+                .orElseThrow(() -> new OrderItemNotFoundException("Order does not belong to customer "));
+
+        orderItemRepository.deleteByOrder(order);
+
+        orderRepository.deleteById(order_id);
+    }
 }

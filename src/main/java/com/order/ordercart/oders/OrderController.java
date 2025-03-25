@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +46,13 @@ public class OrderController {
         return orders.stream()
                 .map(OrderResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    // delete an order by specific user
+    @DeleteMapping("/allorders/order/customer/{id}/order/{order_id}")
+    public ResponseEntity<String> deleteOrder(@PathVariable long id, @PathVariable long order_id) {
+        orderService.deleteOrder(id, order_id);
+        return ResponseEntity.ok("Order deleted succesfully");
     }
 
     // get list of all orders

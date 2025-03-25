@@ -22,4 +22,8 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     @Query("UPDATE OrderItem oi SET oi.product.productId = :newProductId WHERE oi.product.productId = :oldProductId")
     void updateProductReference(@Param("oldProductId") long oldProductId, @Param("newProductId") long newProductId);
 
+    @Modifying
+    @Query("DELETE FROM OrderItem oi WHERE oi.order = :order")
+    void deleteByOrder(@Param("order") OrderModel order);
+
 }
