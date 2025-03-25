@@ -73,7 +73,8 @@ public class ProductController {
         return ResponseEntity.ok("Product updated");
     }
 
-    @PreAuthorize("hasRole('ADMIN')") // only admins can access this
+    // only admins can access this
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/allproducts/delete/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable long id) {
         productService.deleteProduct(id);
