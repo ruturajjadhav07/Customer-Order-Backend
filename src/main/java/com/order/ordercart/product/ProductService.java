@@ -82,6 +82,14 @@ public class ProductService {
         return productRepository.findByProductNameContainingIgnoreCase(name);
     }
 
+    // check stock quantity of product
+    public int getProductQuantity(long productId) {
+        ProductModel product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
+
+        return product.getProductQuantity();
+    }
+
     // Update product details by admin
     @Transactional
     public ProductModel updateProduct(long product_id, ProductModel product) {
@@ -118,7 +126,6 @@ public class ProductService {
     }
 
     // delete product by admin
-
     @Transactional
     public void deleteProduct(long product_id) {
         // Check if a "Deleted Product" exists if not, create it

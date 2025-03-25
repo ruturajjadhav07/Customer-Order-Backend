@@ -58,7 +58,15 @@ public class ProductController {
         return productService.getProductBySearch(name);
     }
 
-    @PreAuthorize("hasRole('ADMIN')") // only admins can access this
+    // check stock quantity of product
+    @GetMapping("/allproducts/product/{id}/quantity")
+    public ResponseEntity<String> getProductQuantity(@PathVariable long id) {
+        int quantity = productService.getProductQuantity(id);
+        return ResponseEntity.ok("Product quantity for product ID " + id + " is " + quantity);
+    }
+
+    // only admins can access this
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/allproducts/update/{id}")
     public ResponseEntity<String> updateProduct(@PathVariable long id, @RequestBody ProductModel product) {
         productService.updateProduct(id, product);
