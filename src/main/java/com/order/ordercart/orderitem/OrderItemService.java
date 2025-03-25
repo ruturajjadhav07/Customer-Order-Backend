@@ -55,41 +55,6 @@ public class OrderItemService {
         }
 
         // Update quantity of an order item
-        // @Transactional
-        // public OrderItem updateQuantity(long customerId, long orderId, long
-        // orderItemId, int addOnQuantity) {
-        // if (!customerRepository.existsById(customerId)) {
-        // throw new CustomerNotFoundException("Customer not found with id: " +
-        // customerId);
-        // }
-
-        // @SuppressWarnings("unused")
-        // OrderModel order = orderRepository.findById(orderId)
-        // .filter(o -> o.getCustomer().getId() == customerId)
-        // .orElseThrow(() -> new OrderItemNotFoundException(
-        // "Order not found or does not belong to customer"));
-
-        // OrderItem orderItem = orderItemRepository.findById(orderItemId)
-        // .orElseThrow(() -> new OrderItemNotFoundException(
-        // "Order item not found with id: " + orderItemId));
-
-        // ProductModel product = orderItem.getProduct();
-        // int updatedQuantity = orderItem.getItemQuantity() + addOnQuantity;
-
-        // // check stock availability
-        // int availableStock = product.getProductQuantity() +
-        // orderItem.getItemQuantity() - updatedQuantity;
-        // if (availableStock < 0) {
-        // throw new StockUnavailableException(
-        // "Not enough stock available for product: " + product.getProductName());
-        // }
-
-        // orderItem.setItemQuantity(updatedQuantity);
-        // orderItem.setItemAmount(product.getProductPrice() * updatedQuantity);
-
-        // return orderItemRepository.save(orderItem);
-        // }
-
         @Transactional
         public OrderItem updateQuantity(long customerId, long orderId, long orderItemId, int addOnQuantity) {
                 if (!customerRepository.existsById(customerId)) {
