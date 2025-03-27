@@ -51,21 +51,25 @@ This is a backend service for managing customer orders, products, and stock leve
    cd Customer-Order-Backend
    ```
 2. **Configure Database:**
-   - Create a **MySQL database** named `order_management`.
+   - Create a **MySQL database** named `order_cart`.
    - Update `application.properties` with your **database credentials**.
+   ```bash
+   spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+   spring.datasource.url=jdbc:mysql://localhost:3306/order_cart
+   spring.datasource.username=username
+   spring.datasource.password=password
+   spring.jpa.show-sql=true
+   spring.jpa.hibernate.ddl-auto=update
+   ```
 3. **Run the application:**
    ```bash
    mvn spring-boot:run
    ```
-4. **Test the API using Postman** or any REST client.
 
----
-
-### **3️⃣ Build & Run the Application**
-
-```sh
-mvn spring-boot:run
-```
+4. **Build & Run the Application**
+   ```sh
+   mvn spring-boot:run
+   ```
 ---
 ## 🔥 API Endpoints
 
