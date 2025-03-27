@@ -50,7 +50,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
             List<SimpleGrantedAuthority> authorities = jwtService.extractRoles(token)
                     .stream()
-                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // Add ROLE_ prefix
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                     .toList();
 
             if (jwtService.validateToken(token, userDetails)) {

@@ -34,7 +34,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for testing; enable it in production
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/login").permitAll() // Allow public access
                         .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -51,7 +51,7 @@ public class SecurityConfig {
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
-        provider.setUserDetailsService(customerDetailService); // ✅ Fix: Set UserDetailsService properly
+        provider.setUserDetailsService(customerDetailService);
         return provider;
     }
 
