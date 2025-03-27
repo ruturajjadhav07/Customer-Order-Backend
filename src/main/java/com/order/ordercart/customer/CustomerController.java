@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.order.ordercart.jwtservice.JWTService;
@@ -39,6 +40,7 @@ public class CustomerController {
     }
 
     // ✅ Get customer details (only for the logged-in user)
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/customer/{id}")
     public ResponseEntity<?> getCustomer(@PathVariable long id, Principal principal) {
         String loggedInEmail = principal.getName(); // Extract email from token
@@ -54,7 +56,8 @@ public class CustomerController {
     }
 
     // ✅ Update customer details (only for the logged-in user)
-    @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('USER')")
+    @PutMapping("/customer/update/{id}")
     public ResponseEntity<String> updateCustomer(@PathVariable long id, @RequestBody CustomerModel customer,
             Principal principal) {
         String loggedInEmail = principal.getName();
@@ -69,7 +72,8 @@ public class CustomerController {
     }
 
     // ✅ Delete customer (only for the logged-in user)
-    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('USER')")
+    @DeleteMapping("/customer/delete/{id}")
     public ResponseEntity<String> deleteCustomer(@PathVariable long id, Principal principal) {
         String loggedInEmail = principal.getName();
         CustomerModel loggedInUser = customerService.getCustomerByEmail(loggedInEmail);
@@ -83,6 +87,7 @@ public class CustomerController {
     }
 
     // ✅ Get all customers (Only for Admins)
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/customers")
     public ResponseEntity<?> getAllCustomers(Principal principal) {
         String loggedInEmail = principal.getName();

@@ -17,6 +17,6 @@ public class CustomerResponse {
         this.email = customer.getEmail();
         this.address = customer.getAddress();
         this.phoneNumber = customer.getPhoneNumber();
-        this.role = customer.getRole().name(); // Convert enum to string
+        this.role = customer.getRole().name();
     }
 }

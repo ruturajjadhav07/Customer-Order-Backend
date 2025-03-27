@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.order.ordercart.customer.CustomerModel.Role;
+import com.order.ordercart.exception.CustomerNotFoundException;
 import com.order.ordercart.jwtservice.JWTService;
 
 import jakarta.transaction.Transactional;
@@ -32,7 +33,7 @@ public class CustomerService {
     // Fetch customer details by email
     public CustomerModel getCustomerByEmail(String email) {
         return customerRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with this email"));
+                .orElseThrow(() -> new CustomerNotFoundException("User not found with this email"));
     }
 
     // Register customer details
@@ -69,7 +70,6 @@ public class CustomerService {
         customer.setEmail(email);
         customer.setAddress(address);
         customer.setPhoneNumber(phone_no);
-        // customer.setRole(Role.USER); // default
         customer.setRole(role != null ? role : Role.USER);
 
         return customerRepository.save(customer);
@@ -87,7 +87,7 @@ public class CustomerService {
         }
 
         CustomerModel customer = customerRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with this email"));
+                .orElseThrow(() -> new CustomerNotFoundException("User not found with this email"));
 
         if (!bCryptPasswordEncoder.matches(password, customer.getPassword())) {
             throw new IllegalArgumentException("Invalid password");
@@ -105,9 +105,7 @@ public class CustomerService {
     }
 
     // update customer details
-
     @Transactional
-
     public CustomerModel updateCustomer(long id, CustomerModel customer) {
         CustomerModel updateCustomer = customerRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
