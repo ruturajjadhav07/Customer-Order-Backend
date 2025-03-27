@@ -11,19 +11,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-// @RequestMapping("/customers")
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    // add product by admin
-    @PreAuthorize("hasRole('ADMIN')") // only admins can access this
-    @PostMapping("/admin/addproduct")
+    // only admin can add product
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin/add")
     public ResponseEntity<String> addProduct(@RequestBody ProductModel product) {
         productService.addProduct(
                 product.getProductName(),
@@ -35,47 +36,47 @@ public class ProductController {
     }
 
     // get all products
-    @GetMapping("/allproducts")
+    @GetMapping
     public List<ProductModel> getAppProducts() {
         return productService.getAllProducts();
     }
 
     // get product by category
-    @GetMapping("/allproducts/category")
+    @GetMapping("/category")
     public List<ProductModel> getProductByCategory(@RequestParam String category) {
         return productService.getProductByCategory(category);
     }
 
     // get product within price range
-    @GetMapping("/allproducts/price-range")
+    @GetMapping("/price-range")
     public List<ProductModel> getProductByPriceRange(@RequestParam double minPrice, @RequestParam double maxPrice) {
         return productService.getProductByPriceRange(minPrice, maxPrice);
     }
 
     // get product with search name
-    @GetMapping("/allproducts/search")
+    @GetMapping("/search")
     public List<ProductModel> getProductBySearch(@RequestParam String name) {
         return productService.getProductBySearch(name);
     }
 
     // check stock quantity of product
-    @GetMapping("/allproducts/product/{id}/quantity")
+    @GetMapping("/{id}/quantity")
     public ResponseEntity<String> getProductQuantity(@PathVariable long id) {
         int quantity = productService.getProductQuantity(id);
         return ResponseEntity.ok("Product quantity for product ID " + id + " is " + quantity);
     }
 
-    // only admins can access this
+    // only admins can update product
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/allproducts/update/{id}")
+    @PutMapping("/admin/update/{id}")
     public ResponseEntity<String> updateProduct(@PathVariable long id, @RequestBody ProductModel product) {
         productService.updateProduct(id, product);
         return ResponseEntity.ok("Product updated");
     }
 
-    // only admins can access this
+    // only admins can delete product
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/allproducts/delete/{id}")
+    @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable long id) {
         productService.deleteProduct(id);
         return ResponseEntity.ok("Product deleted with id: " + id);

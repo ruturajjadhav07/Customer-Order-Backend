@@ -19,7 +19,7 @@ public class ProductService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
-    // add product
+    // only admin can add product
     public ProductModel addProduct(String name, double price, String description, String category, int quantity) {
 
         if (name == null || name.isEmpty()) {
@@ -90,7 +90,7 @@ public class ProductService {
         return product.getProductQuantity();
     }
 
-    // Update product details by admin
+    // only admins can update product
     @Transactional
     public ProductModel updateProduct(long product_id, ProductModel product) {
         ProductModel updateProduct = productRepository.findById(product_id)
@@ -125,7 +125,7 @@ public class ProductService {
         return productRepository.save(updateProduct);
     }
 
-    // delete product by admin
+    // only admins can delete product
     @Transactional
     public void deleteProduct(long product_id) {
         // Check if a "Deleted Product" exists if not, create it
@@ -144,7 +144,7 @@ public class ProductService {
         // Product
         orderItemRepository.updateProductReference(product_id, deletedProduct.getProductId());
 
-        // Delete the actual product
+        // Delete product
         ProductModel product = productRepository.findById(product_id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + product_id));
         productRepository.delete(product);
