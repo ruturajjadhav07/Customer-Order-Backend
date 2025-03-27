@@ -9,19 +9,15 @@ This is a backend service for managing customer orders, products, and stock leve
 - **Backend:** Java, Spring Boot, Spring Security
 - **Database:** MySQL
 - **API Testing:** Postman
-
 ---
-
 ## 🚀 Features
 
 ### 🛍️ Product Management (Admin)
-
 - **Add a new product** 🆕
 - **Update product details** ✏️
 - **Delete products** ❌
 
 ### 🔍 Product Search & Filtering (Public)
-
 - **View all products** 📋
 - **Filter products by category** 📂
 - **Filter products by price range** 💰
@@ -29,14 +25,11 @@ This is a backend service for managing customer orders, products, and stock leve
 - **Check stock quantity of a product** 📦
 
 ### 🛡️ Security & Authentication
-
 - **Role-based access control (RBAC)** 🔑
 - **Admin-only routes for product management** 👨‍💼
-
 ---
 
 ## 📦 Project Setup
-
 ### 🔧 Prerequisites
 
 1. Install **Java 17+**
@@ -44,7 +37,6 @@ This is a backend service for managing customer orders, products, and stock leve
 3. Install **Postman** (for API testing)
 
 ### 🛠️ Installation Steps
-
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/ruturajjadhav07/Customer-Order-Backend.git
@@ -72,7 +64,6 @@ This is a backend service for managing customer orders, products, and stock leve
    ```
 ---
 ## 🔥 API Endpoints
-
 ### **Customer APIs**
 - `POST /register` → Register a new customer  
 - `POST /login` → Login customer  
@@ -101,15 +92,46 @@ This is a backend service for managing customer orders, products, and stock leve
 ### **Order Item APIs**
 - `GET /order-items/{customer_id}/{order_id}/{product_id}` → Fetch order details by user ID  
 - `PUT /order-items/customer/{customerId}/order/{orderId}/orderitem/{orderItemId}/update?addOnQuantity={quantity}` → Update order item quantity  
-
 ---
+## Example Data
+### **Register a Customer**
+**Request:**
+```json
+{
+    "name": "Ruturaj Jadhav",
+    "email": "ruturajjadhav122@gmail.com",
+    "password": "*********",
+    "address": "Pune",
+    "phoneNumber": "123456789",
+    "role": "USER"
+}
+```
 
+### **Login**
+**Request:**
+```json
+{
+    "email": "ruturajjadhav122@gmail.com",
+    "password": "*********"
+}
+```
+
+### **Add a Product (Admin Only)**
+**Request:**
+```json
+{
+    "productName": "Laptop",
+    "productPrice": 1200.50,
+    "productDescription": "High-performance laptop",
+    "productCategory": "Electronics",
+    "productQuantity": 10
+}
+```
+---
 ## 📚 Documentation
 - **Spring Boot:** [Official Documentation](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
 - **Spring Security:** [Official Documentation](https://docs.spring.io/spring-security/reference/index.html)
-
-
+---
 ## 📜 License
-
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/ruturajjadhav07/Customer-Order-Backend/blob/main/LICENSE) file for details.
 
