@@ -4,141 +4,108 @@
 
 This is a backend service for managing customer orders, products, and stock levels. It provides functionalities such as adding products, placing orders, and updating order items with stock validation.
 
-## 🚀 Technologies Used
+## 🏗️ Tech Stack
 
-- **Java** (Spring Boot)
-- **MySQL** (Database)
-- **JPA/Hibernate** (ORM)
-- **Spring Security** (Authentication & Authorization)
-- **Postman** (API Testing)
+- **Backend:** Java, Spring Boot, Spring Security
+- **Database:** MySQL
+- **API Testing:** Postman
 
-## 📂 Project Structure
+---
 
-```
-Directory structure:
-└── ruturajjadhav07-customer-order-backend/
-    ├── mvnw
-    ├── mvnw.cmd
-    ├── pom.xml
-    ├── src/
-    │   ├── main/
-    │   │   ├── java/
-    │   │   │   └── com/
-    │   │   │       └── order/
-    │   │   │           └── ordercart/
-    │   │   │               ├── OrdercartApplication.java
-    │   │   │               ├── config/
-    │   │   │               │   ├── JWTFilter.java
-    │   │   │               │   └── SecurityConfig.java
-    │   │   │               ├── customer/
-    │   │   │               │   ├── CustomerController.java
-    │   │   │               │   ├── CustomerDetailService.java
-    │   │   │               │   ├── CustomerModel.java
-    │   │   │               │   ├── CustomerPrinciple.java
-    │   │   │               │   ├── CustomerRepository.java
-    │   │   │               │   ├── CustomerResponse.java
-    │   │   │               │   └── CustomerService.java
-    │   │   │               ├── exception/
-    │   │   │               │   ├── CustomerNotFoundException.java
-    │   │   │               │   ├── GlobalExceptionHandler.java
-    │   │   │               │   ├── OrderCreationException.java
-    │   │   │               │   ├── OrderItemNotFoundException.java
-    │   │   │               │   ├── ProductNotFoundException.java
-    │   │   │               │   └── StockUnavailableException.java
-    │   │   │               ├── jwtservice/
-    │   │   │               │   └── JWTService.java
-    │   │   │               ├── oders/
-    │   │   │               │   ├── OrderController.java
-    │   │   │               │   ├── OrderModel.java
-    │   │   │               │   ├── OrderRepository.java
-    │   │   │               │   ├── OrderRequest.java
-    │   │   │               │   ├── OrderResponse.java
-    │   │   │               │   └── OrderService.java
-    │   │   │               ├── orderitem/
-    │   │   │               │   ├── OrderItem.java
-    │   │   │               │   ├── OrderItemController.java
-    │   │   │               │   ├── OrderItemRepository.java
-    │   │   │               │   ├── OrderItemReq.java
-    │   │   │               │   └── OrderItemService.java
-    │   │   │               └── product/
-    │   │   │                   ├── ProductController.java
-    │   │   │                   ├── ProductModel.java
-    │   │   │                   ├── ProductRepository.java
-    │   │   │                   └── ProductService.java
-    │   │   └── resources/
-    │   │       └── application.properties
-    │   └── test/
-    │       └── java/
-    │           └── com/
-    │               └── order/
-    │                   └── ordercart/
-    │                       └── OrdercartApplicationTests.java
-    └── .mvn/
-        └── wrapper/
-            └── maven-wrapper.properties
+## 🚀 Features
 
-```
+### 🛍️ Product Management (Admin)
 
-## ⚙️ Installation & Setup
+- **Add a new product** 🆕
+- **Update product details** ✏️
+- **Delete products** ❌
 
-### **1️⃣ Clone the Repository**
+### 🔍 Product Search & Filtering (Public)
 
-```sh
-git clone https://github.com/ruturajjadhav07/Customer-Order-Backend.git
-cd your-repo
-```
+- **View all products** 📋
+- **Filter products by category** 📂
+- **Filter products by price range** 💰
+- **Search products by name** 🔎
+- **Check stock quantity of a product** 📦
 
-### **2️⃣ Configure Database**
+### 🛡️ Security & Authentication
 
-Update `src/main/resources/application.properties` with your MySQL database credentials:
+- **Role-based access control (RBAC)** 🔑
+- **Admin-only routes for product management** 👨‍💼
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/order_db
-spring.datasource.username=root
-spring.datasource.password=yourpassword
-```
+---
+
+## 📦 Project Setup
+
+### 🔧 Prerequisites
+
+1. Install **Java 17+**
+2. Install **MySQL**
+3. Install **Postman** (for API testing)
+
+### 🛠️ Installation Steps
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/customer-order-management.git
+   cd customer-order-management
+   ```
+2. **Configure Database:**
+   - Create a **MySQL database** named `order_management`.
+   - Update `application.properties` with your **database credentials**.
+3. **Run the application:**
+   ```bash
+   mvn spring-boot:run
+   ```
+4. **Test the API using Postman** or any REST client.
+
+---
 
 ### **3️⃣ Build & Run the Application**
 
 ```sh
 mvn spring-boot:run
 ```
-
+---
 ## 🔥 API Endpoints
 
 ### **Customer APIs**
-
-- `POST /register` → Register a new customer
-- `POST /login` → Login customer
-- `GET /customer/{id}` → Get customer details (only for logged-in user)
-- `PUT /update/{id}` → Update customer details (only for logged-in user)
-- `DELETE /delete/{id}` → Delete customer (only for logged-in user)
-- `GET /admin/customers` → Get all customers (only for Admins)
+- `POST /register` → Register a new customer  
+- `POST /login` → Login customer  
+- `GET /customer/{id}` → Get customer details (only for logged-in user)  
+- `PUT /customer/update/{id}` → Update customer details (only for logged-in user)  
+- `DELETE /customer/delete/{id}` → Delete customer (only for logged-in user)  
+- `GET /admin/customers` → Get all customers (only for Admins)  
 
 ### **Order APIs**
-
-- `POST /login/order` → Place an order
-- `GET /allorders/{id}` → Get order details by ID
-- `GET /allorders/{id}/orders` → Get all orders of a specific customer
-- `DELETE /allorders/order/customer/{id}/order/{order_id}` → Delete an order (only for the customer)
-- `GET /admin/allorders` → Get all orders (only for Admins)
+- `POST /customer/order` → Place an order  
+- `GET /customer/orders/{id}` → Get order details by ID  
+- `GET /customer/orders/{customerId}/orders` → Get all orders of a specific customer  
+- `DELETE /customer/order/{customerId}/{orderId}` → Delete an order (only for the customer)  
+- `GET /customer/admin/allorders` → Get all orders (only for Admins)  
 
 ### **Product APIs**
-
-- `POST /admin/addproduct` → Add a product (only for Admins)
-- `GET /allproducts` → Get all products
-- `GET /allproducts/category` → Get products by category
-- `GET /allproducts/price-range` → Get products within a price range
-- `GET /allproducts/search` → Search for products by name
-- `GET /allproducts/product/{id}/quantity` → Check stock quantity of a product
-- `PUT /allproducts/update/{id}` → Update a product (only for Admins)
-- `DELETE /allproducts/delete/{id}` → Delete a product (only for Admins)
+- `POST /products/admin/add` → Add a product (only for Admins)  
+- `GET /products` → Get all products  
+- `GET /products/category?category={category}` → Get products by category  
+- `GET /products/price-range?minPrice={min}&maxPrice={max}` → Get products within a price range  
+- `GET /products/search?name={name}` → Search products by name  
+- `GET /products/{id}/quantity` → Check stock quantity of a product  
+- `PUT /products/admin/update/{id}` → Update product details (only for Admins)  
+- `DELETE /products/admin/delete/{id}` → Delete a product (only for Admins)  
 
 ### **Order Item APIs**
+- `GET /order-items/{customer_id}/{order_id}/{product_id}` → Fetch order details by user ID  
+- `PUT /order-items/customer/{customerId}/order/{orderId}/orderitem/{orderItemId}/update?addOnQuantity={quantity}` → Update order item quantity  
 
-- `GET /order-items/{customer_id}/{order_id}/{product_id}` → Fetch order details and product name
-- `PUT /order-items/customer/{customerId}/order/{orderId}/orderitem/{orderItemId}/update` → Update order item quantity
+---
+
+## 📚 Documentation
+- **Spring Boot:** [Official Documentation](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
+- **Spring Security:** [Official Documentation](https://docs.spring.io/spring-security/reference/index.html)
+
 
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/ruturajjadhav07/Customer-Order-Backend/blob/main/LICENSE) file for details.
+
