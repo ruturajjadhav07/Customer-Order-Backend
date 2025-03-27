@@ -47,8 +47,8 @@ This is a backend service for managing customer orders, products, and stock leve
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/customer-order-management.git
-   cd customer-order-management
+   git clone https://github.com/ruturajjadhav07/Customer-Order-Backend.git
+   cd Customer-Order-Backend
    ```
 2. **Configure Database:**
    - Create a **MySQL database** named `order_management`.
