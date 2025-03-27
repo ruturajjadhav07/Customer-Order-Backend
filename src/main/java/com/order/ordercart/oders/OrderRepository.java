@@ -13,4 +13,6 @@ public interface OrderRepository extends JpaRepository<OrderModel, Long> {
     // get all orders of a specific customer
     List<OrderModel> findByCustomer(CustomerModel customer);
 
+    // Get all orders by customer's email
+    List<OrderModel> findByCustomer_Email(String email);
 }

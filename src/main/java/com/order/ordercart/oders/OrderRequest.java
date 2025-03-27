@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class OrderRequest {
+    // access dto
     private Long customerId;
     private List<OrderItemReq> items;
 }

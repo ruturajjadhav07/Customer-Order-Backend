@@ -96,11 +96,6 @@ public class OrderService {
         return orderRepository.findByCustomer(customer);
     }
 
-    // get list of all orders
-    public List<OrderModel> getOrderList() {
-        return orderRepository.findAll();
-    }
-
     // delete an order by specific user
     public void deleteOrder(long id, long order_id) {
         @SuppressWarnings("unused")
@@ -114,4 +109,17 @@ public class OrderService {
 
         orderRepository.deleteById(order_id);
     }
+
+    // get list of all orders
+    public List<OrderModel> getOrderList() {
+        return orderRepository.findAll();
+    }
+
+    // helper method
+    public Long getCustomerIdByUsername(String username) {
+        return customerRepository.findByEmail(username)
+                .map(customer -> customer.getId()) // Extracting customer ID
+                .orElseThrow(() -> new RuntimeException("Customer not found with username: " + username));
+    }
+
 }
