@@ -7,6 +7,7 @@ import com.order.ordercart.customer.CustomerModel;
 import com.order.ordercart.customer.CustomerRepository;
 import com.order.ordercart.exception.CustomerNotFoundException;
 import com.order.ordercart.exception.OrderItemNotFoundException;
+import com.order.ordercart.exception.ProductNotFoundException;
 import com.order.ordercart.exception.StockUnavailableException;
 import com.order.ordercart.oders.OrderModel;
 import com.order.ordercart.oders.OrderRepository;
@@ -40,11 +41,11 @@ public class OrderItemService {
 
                 OrderModel order = orderRepository.findById(order_id)
                                 .filter(o -> o.getCustomer().getId() == customer_id)
-                                .orElseThrow(() -> new IllegalArgumentException(
+                                .orElseThrow(() -> new OrderItemNotFoundException(
                                                 "Order not found with id: " + order_id));
 
                 ProductModel product = productRepository.findById(product_id)
-                                .orElseThrow(() -> new IllegalArgumentException(
+                                .orElseThrow(() -> new ProductNotFoundException(
                                                 "product not found with id: " + product_id));
 
                 OrderItem orderItem = orderItemRepository.findByOrderAndProduct(order, product)

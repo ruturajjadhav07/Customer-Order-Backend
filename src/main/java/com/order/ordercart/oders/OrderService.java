@@ -119,7 +119,7 @@ public class OrderService {
     public Long getCustomerIdByUsername(String username) {
         return customerRepository.findByEmail(username)
                 .map(customer -> customer.getId()) // Extracting customer ID
-                .orElseThrow(() -> new RuntimeException("Customer not found with username: " + username));
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with username: " + username));
     }
 
 }
